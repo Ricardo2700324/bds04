@@ -34,7 +34,7 @@ public class CityService {
 		entity = repository.save(entity);
 		return new CityDTO(entity);
 	}
-	
+	/*
 	public void delete(Long id) {
 		try {
 		repository.deleteById(id);
@@ -46,5 +46,5 @@ public class CityService {
 			throw new DatabaseException("Integrity violation");
 		}
 	}
-	
+	*/
 }
