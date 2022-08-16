@@ -1,7 +1,10 @@
 package com.devsuperior.bds04.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,6 +29,13 @@ public class CityService {
 		List<City> list = repository.findAll(Sort.by("name"));
 		return list.stream().map(x -> new CityDTO(x)).collect(Collectors.toList());
 	}
+	
+	@Transactional(readOnly = true)
+	public CityDTO findById(Long id) {
+		Optional<City> obj = repository.findById(id);
+		City entity = obj.orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
+		return new CityDTO(entity);
+	}
 
 	@Transactional
 	public CityDTO insert(CityDTO dto) {
@@ -34,7 +44,22 @@ public class CityService {
 		entity = repository.save(entity);
 		return new CityDTO(entity);
 	}
-	/*
+	
+	@Transactional
+	public CityDTO update(CityDTO dto, Long id) {
+		try {
+			City entity = new City();
+			entity = repository.getOne(id);
+			entity.setName(dto.getName());
+			entity = repository.save(entity);
+			return new CityDTO(entity);
+		}
+		catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found " + id);
+		}
+	}
+	
+	
 	public void delete(Long id) {
 		try {
 		repository.deleteById(id);
@@ -46,5 +71,5 @@ public class CityService {
 			throw new DatabaseException("Integrity violation");
 		}
 	}
-	*/
+	
 }
