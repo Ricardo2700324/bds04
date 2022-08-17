@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuperior.bds04.dto.EventDTO;
 import com.devsuperior.bds04.entities.City;
 import com.devsuperior.bds04.entities.Event;
+import com.devsuperior.bds04.repositories.CityRepository;
 import com.devsuperior.bds04.repositories.EventRepository;
 import com.devsuperior.bds04.services.exceptions.DatabaseException;
 import com.devsuperior.bds04.services.exceptions.ResourceNotFoundException;
@@ -24,28 +25,31 @@ public class EventService {
 
 	@Autowired
 	private EventRepository repository;
-
-	@Transactional
-	public EventDTO update(EventDTO dto, Long id) {
-		try {
-			Event entity = repository.getOne(id);
-			entity.setName(dto.getName());
-			entity.setDate(dto.getDate());
-			entity.setUrl(dto.getUrl());
-			entity.setCity(new City(dto.getCityId(), null));
-			entity = repository.save(entity);
-			return new EventDTO(entity);
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException("Id not found " + id);
-		}
-	}
 	
-	@Transactional(readOnly = true)
-	public EventDTO findById(Long id) {
-		Optional<Event> obj = repository.findById(id);
-		Event entity = obj.orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
-		return new EventDTO(entity);
-	}
+	@Autowired
+	private CityRepository cityRepository;
+
+//	@Transactional
+//	public EventDTO update(EventDTO dto, Long id) {
+//		try {
+//			Event entity = repository.getOne(id);
+//			entity.setName(dto.getName());
+//			entity.setDate(dto.getDate());
+//			entity.setUrl(dto.getUrl());
+//			entity.setCity(new City(dto.getCityId(), null));
+//			entity = repository.save(entity);
+//			return new EventDTO(entity);
+//		} catch (EntityNotFoundException e) {
+//			throw new ResourceNotFoundException("Id not found " + id);
+//		}
+//	}
+	
+//	@Transactional(readOnly = true)
+//	public EventDTO findById(Long id) {
+//		Optional<Event> obj = repository.findById(id);
+//		Event entity = obj.orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
+//		return new EventDTO(entity);
+//	}
 
 	@Transactional(readOnly = true)
 	public Page<EventDTO> findAllPaged(Pageable pageable) {
@@ -59,20 +63,20 @@ public class EventService {
 		entity.setName(dto.getName());
 		entity.setDate(dto.getDate());
 		entity.setUrl(dto.getUrl());
-		entity.setCity(new City(dto.getCityId(), null));
+		entity.setCity(cityRepository.getOne(dto.getCityId()));
 		entity = repository.save(entity);
 		return new EventDTO(entity);
 	}
 
-	public void delete(Long id) {
-		try {
-			repository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("Id not found " + id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException("Integrity violation");
-		}
-
-	}
+//	public void delete(Long id) {
+//		try {
+//			repository.deleteById(id);
+//		} catch (EmptyResultDataAccessException e) {
+//			throw new ResourceNotFoundException("Id not found " + id);
+//		} catch (DataIntegrityViolationException e) {
+//			throw new DatabaseException("Integrity violation");
+//		}
+//
+//	}
 
 }

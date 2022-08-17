@@ -34,11 +34,11 @@ public class CityController {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<CityDTO> findById(@PathVariable Long id) {
-		CityDTO dto = service.findById(id);
-		return ResponseEntity.ok().body(dto);
-	}
+//	@GetMapping(value = "/{id}")
+//	public ResponseEntity<CityDTO> findById(@PathVariable Long id) {
+//		CityDTO dto = service.findById(id);
+//		return ResponseEntity.ok().body(dto);
+//	}
 	
 	@PostMapping
 	public ResponseEntity<CityDTO> insert(@RequestBody CityDTO dto){
@@ -50,17 +50,17 @@ public class CityController {
 	}
 	
 	
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<CityDTO> update(@PathVariable Long id,@Valid @RequestBody CityDTO dto) {
-		dto =service.update(dto, id);
-		return ResponseEntity.ok().body(dto);
-	}
+//	@PutMapping(value = "/{id}")
+//	public ResponseEntity<CityDTO> update(@PathVariable Long id,@Valid @RequestBody CityDTO dto) {
+//		dto =service.update(dto, id);
+//		return ResponseEntity.ok().body(dto);
+//	}
 
-	
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id){
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-		
-	}
+//	
+//	@DeleteMapping(value = "/{id}")
+//	public ResponseEntity<Void> delete(@PathVariable Long id){
+//		service.delete(id);
+//		return ResponseEntity.noContent().build();
+//		
+//	}
 }

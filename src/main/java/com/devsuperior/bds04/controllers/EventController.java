@@ -35,11 +35,11 @@ public class EventController {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<EventDTO> findById(@PathVariable Long id) {
-		EventDTO dto = service.findById(id);
-		return ResponseEntity.ok().body(dto);
-	}
+//	@GetMapping(value = "/{id}")
+//	public ResponseEntity<EventDTO> findById(@PathVariable Long id) {
+//		EventDTO dto = service.findById(id);
+//		return ResponseEntity.ok().body(dto);
+//	}
 	
 	
 
@@ -58,17 +58,17 @@ public class EventController {
 //	}
 
 
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
+//	@DeleteMapping(value = "/{id}")
+//	public ResponseEntity<Void> delete(@PathVariable Long id) {
+//		service.delete(id);
+//		return ResponseEntity.noContent().build();
+//	}
 
 	
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<EventDTO> update(@PathVariable Long id,@Valid @RequestBody EventDTO dto) {
-		dto =service.update(dto, id);
-		return ResponseEntity.ok().body(dto);
-	}
+//	@PutMapping(value = "/{id}")
+//	public ResponseEntity<EventDTO> update(@PathVariable Long id,@Valid @RequestBody EventDTO dto) {
+//		dto =service.update(dto, id);
+//		return ResponseEntity.ok().body(dto);
+//	}
 	
 }
