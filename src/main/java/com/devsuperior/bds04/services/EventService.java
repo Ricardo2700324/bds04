@@ -29,32 +29,32 @@ public class EventService {
 	@Autowired
 	private CityRepository cityRepository;
 
-//	@Transactional
-//	public EventDTO update(EventDTO dto, Long id) {
-//		try {
-//			Event entity = repository.getOne(id);
-//			entity.setName(dto.getName());
-//			entity.setDate(dto.getDate());
-//			entity.setUrl(dto.getUrl());
-//			entity.setCity(new City(dto.getCityId(), null));
-//			entity = repository.save(entity);
-//			return new EventDTO(entity);
-//		} catch (EntityNotFoundException e) {
-//			throw new ResourceNotFoundException("Id not found " + id);
-//		}
-//	}
+	@Transactional
+	public EventDTO update(Long id, EventDTO dto) {
+		try {
+			Event entity = repository.getOne(id);
+			entity.setName(dto.getName());
+			entity.setDate(dto.getDate());
+			entity.setUrl(dto.getUrl());
+			entity.setCity(new City(dto.getCityId(), null));
+			entity = repository.save(entity);
+			return new EventDTO(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found " + id);
+		}
+	}
 	
-//	@Transactional(readOnly = true)
-//	public EventDTO findById(Long id) {
-//		Optional<Event> obj = repository.findById(id);
-//		Event entity = obj.orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
-//		return new EventDTO(entity);
-//	}
+	@Transactional(readOnly = true)
+	public EventDTO findById(Long id) {
+		Optional<Event> obj = repository.findById(id);
+		Event entity = obj.orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
+		return new EventDTO(entity);
+	}
 
 	@Transactional(readOnly = true)
 	public Page<EventDTO> findAllPaged(Pageable pageable) {
-		Page<Event> list = repository.findAll(pageable);
-		return list.map(x -> new EventDTO(x));
+		Page<Event> page = repository.findAll(pageable);
+		return page.map(x -> new EventDTO(x));
 	}
 
 	@Transactional
@@ -63,20 +63,32 @@ public class EventService {
 		entity.setName(dto.getName());
 		entity.setDate(dto.getDate());
 		entity.setUrl(dto.getUrl());
-		entity.setCity(cityRepository.getOne(dto.getCityId()));
+//		entity.setCity(cityRepository.getOne(dto.getCityId()));
+//		entity.setCity(new City(dto.getCityId(),null));
+		copyDtoToEntity(dto, entity);
+		
 		entity = repository.save(entity);
 		return new EventDTO(entity);
 	}
+	
+	
+	private void copyDtoToEntity(EventDTO dto, Event entity) {
+		entity.setName(dto.getName());
+		entity.setDate(dto.getDate());
+		entity.setUrl(dto.getUrl());
+		entity.setCity(new City(dto.getCityId(), null));		
+	}
+	
 
-//	public void delete(Long id) {
-//		try {
-//			repository.deleteById(id);
-//		} catch (EmptyResultDataAccessException e) {
-//			throw new ResourceNotFoundException("Id not found " + id);
-//		} catch (DataIntegrityViolationException e) {
-//			throw new DatabaseException("Integrity violation");
-//		}
-//
-//	}
+	public void delete(Long id) {
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Id not found " + id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Integrity violation");
+		}
+
+	}
 
 }

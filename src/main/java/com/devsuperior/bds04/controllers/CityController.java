@@ -20,47 +20,43 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.devsuperior.bds04.dto.CityDTO;
 import com.devsuperior.bds04.services.CityService;
 
-
 @RestController
 @RequestMapping(value = "/cities")
 public class CityController {
 
 	@Autowired
 	private CityService service;
-	
+
 	@GetMapping
-	public ResponseEntity<List<CityDTO>> findAll(){
-		List<CityDTO> list = service.findAll();	
+	public ResponseEntity<List<CityDTO>> findAll() {
+		List<CityDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
-	
-//	@GetMapping(value = "/{id}")
-//	public ResponseEntity<CityDTO> findById(@PathVariable Long id) {
-//		CityDTO dto = service.findById(id);
-//		return ResponseEntity.ok().body(dto);
-//	}
-	
-	@PostMapping
-	public ResponseEntity<CityDTO> insert(@RequestBody CityDTO dto){
-		dto = service.insert(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(dto.getId()).toUri();
-		return ResponseEntity.created(uri).body(dto);
-		
-	}
-	
-	
-//	@PutMapping(value = "/{id}")
-//	public ResponseEntity<CityDTO> update(@PathVariable Long id,@Valid @RequestBody CityDTO dto) {
-//		dto =service.update(dto, id);
-//		return ResponseEntity.ok().body(dto);
-//	}
 
-//	
-//	@DeleteMapping(value = "/{id}")
-//	public ResponseEntity<Void> delete(@PathVariable Long id){
-//		service.delete(id);
-//		return ResponseEntity.noContent().build();
-//		
-//	}
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<CityDTO> findById(@PathVariable Long id) {
+		CityDTO dto = service.findById(id);
+		return ResponseEntity.ok().body(dto);
+	}
+
+	@PostMapping
+	public ResponseEntity<CityDTO> insert(@Valid @RequestBody CityDTO dto) {
+		dto = service.insert(dto);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+		return ResponseEntity.created(uri).body(dto);
+
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<CityDTO> update(@PathVariable Long id, @Valid @RequestBody CityDTO dto) {
+		dto = service.update(dto, id);
+		return ResponseEntity.ok().body(dto);
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+
+	}
 }

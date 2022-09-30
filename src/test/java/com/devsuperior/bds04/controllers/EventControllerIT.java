@@ -43,9 +43,9 @@ public class EventControllerIT {
 	@BeforeEach
 	void setUp() throws Exception {
 		
-		clientUsername = "alex@gmail.com";
+		clientUsername = "ana@gmail.com";
 		clientPassword = "123456";
-		adminUsername = "maria@gmail.com";
+		adminUsername = "bob@gmail.com";
 		adminPassword = "123456";
 	}
 
